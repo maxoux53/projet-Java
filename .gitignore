@@ -1,5 +1,17 @@
+### macOS ###
 .DS_Store
+
+### Draw.io ###
 *.bkp
 *drawio.dtmp
-.env
+
+### Visual Studio Code ###
 .vscode/
+
+### IntelliJ ###
+.idea/
+out/
+target/
+
+### Environment Variables ###
+.env
