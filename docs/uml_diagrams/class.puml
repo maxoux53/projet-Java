@@ -1,0 +1,102 @@
+@startuml Store
+
+' Classes
+class Employee extends Person {
+    -id
+    -password
+    -isActive : bool
+    -street
+    -streetNumber
+    -unitNumber [0..1]
+    -hireDate
+}
+
+class City {
+    -zipCode
+    -name
+}
+
+class Country {
+    -name
+}
+
+class Role {
+    -name
+}
+
+class Supplier {
+    -vatNumber
+    -name
+    -email
+    -phone
+}
+
+class Product {
+    -barcode
+    -name
+    -description [0..1]
+    -amount
+    -isAvailable : bool
+}
+
+class PriceHistory {
+    -exclVatPrice
+    -discount
+    -startDate
+}
+
+class Vat {
+    -type
+    -rate
+}
+
+class Category {
+    -id
+    -label
+}
+
+class Brand {
+    -id
+    -name
+}
+
+class OrderLine {
+    -quantity
+}
+
+class Purchase {
+    -id
+    -date
+}
+
+class Customer extends Person {
+    -loyaltyCardNumber
+    -birthDate
+    -email
+    -phone [0..1]
+    -vatNumber [0..1]
+    -loyaltyPoints
+}
+
+abstract class Person {
+    -firstName
+    -lastName
+}
+
+' Relationships
+Employee "0..1" -- "*" Employee : manages >
+Employee "*" -- "1" Role
+Employee "*" -- "1" City
+City "*" -- "1" Country
+Supplier "0..1" -- "1" Country
+Product "*" -- "1" Supplier
+PriceHistory "*" -- "1" Product
+Product "*" -- "1" Vat
+Product "*" -- "1" Category
+Product "*" -- "1" Brand
+Product "1" -- "*" OrderLine
+OrderLine "*" -- "1" Purchase
+Purchase "*" -- "0..1" Customer
+Purchase "*" -- "1" Employee
+
+@enduml
