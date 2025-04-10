@@ -1,69 +1,118 @@
 # Projet Java + SQL
 
-## À propos
+> [!NOTE]
+> Readme également disponible en [français](README_FR.md)
 
-Notre projet, réalisé en Java et SQL (PostgreSQL), est un logiciel de gestion de magasin d'alimentation généraliste.
-Il permet la gestion des stocks, la gestion client (programme de fidélité, etc), la gestion des employés (par le manager).
+## About
+
+This project, developed in both Java and SQL (PostgreSQL), is a medium-sized grocery store management software.
+It allows for stock management, customer management (loyalty program, etc.), and employee management (by the manager).
 
 ## Roadmap
 
-Une feuille de route avec les fonctionnalités à implémenter et leur avancement est disponible [ici](roadmap.md).
+A roadmap with features to be implemented and progress is available [here](roadmap.md) (in French only).
 
-## Table des matières
+## Table of contents
 
-1. [À propos](#à-propos)
+1. [About](#about)
 2. [Roadmap](#roadmap)
-3. [Structure de la base de données](#structure-de-la-base-de-données)
-4. [Technologies utilisées](#technologies-utilisées)
-   - [Conception](#conception)
-   - [Développement](#développement)
-   - [Interface utilisateur](#interface-utilisateur)
-   - [Base de données](#base-de-données)
-5. [Installation](#installation)
-6. [Utilisation](#utilisation)
-7. [Informations sur la licence](#informations-sur-la-licence)
+3. [Table of contents](#table-of-contents)
+4. [Installation](#installation)
+   - [Prerequisites](#prerequisites)
+   - [Build](#build)
+5. [Usage](#usage)
+6. [Technological stack](#technological-stack)
+   - [Development](#development)
+   - [Dependencies](#dependencies)
+   - [User interface (GUI)](#user-interface-gui)
+   - [Database](#database)
+   - [Design](#design)
+7. [Database structure](#database-structure)
+8. [License information](#license-information)
 
-## Structure de la base de données
+## Installation
 
-> [!NOTE]
-> Schémas uniquement visibles avec l'interface en **mode clair** !
+### Prerequisites
 
-**Schema entité-association (EA)**  
-![Schema EA](docs/db_design/er_diagram.svg)
+- Java 11 or higher (JDK)
+- Docker (for the database)
 
-**Schema relationnel**  
-![Schema relationnel](docs/db_design/relational_schema.svg)
+### Build
 
-## Technologies utilisées
+1. **Clone the repository**
 
-### Conception
+   ```bash
+   git clone https://github.com/maxoux53/projet-Java.git
+   cd projet-Java
+   ```
 
-- PlantUML pour la modélisation orientée objet.
-- Draw.io pour la modélisation de la base de données (EA + relationnel).
+2. **Set up environment variables**  
+   Configure the following variables:
+   - `PG_USER`: Database username
+   - `PG_PASSWORD`: User password for the database
+   - `PG_DB`: Database name
 
-### Développement
+   `.env` file example [here](.env).
+
+3. **Database configuration**
+   - Use the compose command to create the PostgreSQL container
+
+      ```bash
+      docker compose up -d
+      ```
+
+   - Run [this SQL script](./sql/DB_INIT_TABLES.sql) to create the database structure.
+
+4. **Run the software**
+   - Open the project in IntelliJ
+   - Run the `Main` class to start the app
+
+   You can also compile the project yourself with `javac`.
+
+## Usage
+
+(...)
+
+## Technological stack
+
+### Development
 
 - Java
 - OpenJDK
-- Environnement: IntelliJ IDEA
+- IntelliJ build system
 
-### Interface utilisateur
+### Dependencies
+
+- [Dotenv](https://github.com/cdimascio/dotenv-java)
+- [PostgreSQL JDBC Driver](https://github.com/pgjdbc/pgjdbc)
+
+### User interface (GUI)
 
 - JFC Swing
 - AWT
 
-### Base de données
+### Database
 
 - PostgreSQL
+- Docker
+- DataGrip & Azure Data Studio (for development)
 
-## Installation
+### Design
 
-(...)
+- PlantUML to model the object-oriented design (class diagram)
+- Draw.io for the database design (ER & relational schemas)
 
-## Utilisation
+## Database structure
 
-(...)
+> [!IMPORTANT]
+> Schemas are only visible with the **light theme**!
 
-## Informations sur la licence
+**Entity-Relationship (ER) diagram**
+![EA schema](docs/db_design/er_diagram.svg)
 
-*Ce projet est sous licence GNU GPL v3. Pour plus de détails, veuillez consulter le fichier [LICENSE](LICENSE).*
+**Relational schema**
+![Relational schema](docs/db_design/relational_schema.svg)
+
+## License information
+
+*This project is licensed under the GNU GPL v3. For more details, please refer to the [LICENSE](LICENSE) file.*
