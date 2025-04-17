@@ -21,10 +21,6 @@ public class Employee {
         this.id = id;
     }
 
-    public Employee() {
-        this(null);
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

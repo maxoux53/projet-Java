@@ -2,10 +2,17 @@ package model;
 
 public class Category {
     private Integer id;
-    private String name;
+    private String label;
 
-    public Category(Integer id, String name) {
+    public Category(Integer id) {
         this.id = id;
-        this.name = name;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

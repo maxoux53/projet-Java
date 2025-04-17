@@ -50,14 +50,6 @@ CREATE TABLE brand (
     name VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE supplier (
-    vat_number BIGINT PRIMARY KEY,
-    name VARCHAR(40) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    phone INT NOT NULL,                 -- à vérifier
-    country_name VARCHAR(20) NOT NULL REFERENCES country(name)
-);
-
 CREATE TABLE product (
     barcode BIGINT PRIMARY KEY,
     name VARCHAR(60) NOT NULL,
@@ -67,15 +59,8 @@ CREATE TABLE product (
     vat_type CHAR(1) NOT NULL REFERENCES vat(type),
     category_id SMALLINT NOT NULL REFERENCES category(id),
     brand_id SMALLINT NOT NULL REFERENCES brand(id),
-    supplier_vat_number BIGINT NOT NULL REFERENCES supplier(vat_number)
-);
-
-CREATE TABLE price_history (
     excl_vat_price MONEY NOT NULL,
-    discount SMALLINT NOT NULL,
-    start_date DATE NOT NULL,
-    product_barcode BIGINT REFERENCES product(barcode),
-    CONSTRAINT pk_price_history PRIMARY KEY (start_date, product_barcode)
+    start_date DATE NOT NULL
 );
 
 CREATE TABLE customer (

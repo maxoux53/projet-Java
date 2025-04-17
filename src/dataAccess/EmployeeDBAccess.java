@@ -1,5 +1,6 @@
 package dataAccess;
 
+import model.City;
 import model.Employee;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class EmployeeDBAccess extends DBAccess implements IEmployeeDAO {
         objectClassName = Employee.class.getSimpleName().toLowerCase();
     }
 
-    public int create(Employee employee) throws InsertionFailedException, DAORetrievalFailedException {
+    public int create(Employee employee, City city) throws InsertionFailedException, DAORetrievalFailedException {
         sqlInstruction = "INSERT INTO employee (first_name, last_name, password, is_active, street, street_number, unit_number, role_label, hire_date, manager_id, city_zip_code, city_name) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
@@ -27,6 +28,9 @@ public class EmployeeDBAccess extends DBAccess implements IEmployeeDAO {
             preparedStatement.setString(8, employee.getRoleLabel());
             preparedStatement.setDate(9, Date.valueOf(employee.getHireDate()));
             preparedStatement.setInt(10, employee.getManagerId());
+
+            city(city);
+
             preparedStatement.setInt(11, employee.getCityZipCode());
             preparedStatement.setString(12, employee.getCityName());
 
@@ -94,7 +98,7 @@ public class EmployeeDBAccess extends DBAccess implements IEmployeeDAO {
         }
     }
 
-    public int edit(Employee employee) throws UpdateFailedException, DAORetrievalFailedException {
+    public int edit(Employee employee, City city) throws UpdateFailedException, DAORetrievalFailedException {
         sqlInstruction = "UPDATE employee SET first_name = ?, last_name = ?, password = ?, is_active = ?, street = ?, street_number = ?, unit_number = ?, role_label = ?, hire_date = ?, manager_id = ?, city_zip_code = ?, city_name = ? WHERE id = ?;";
         int id = employee.getId();
 
@@ -111,6 +115,9 @@ public class EmployeeDBAccess extends DBAccess implements IEmployeeDAO {
             preparedStatement.setString(8, employee.getRoleLabel());
             preparedStatement.setDate(9, Date.valueOf(employee.getHireDate()));
             preparedStatement.setInt(10, employee.getManagerId());
+
+            city(city);
+
             preparedStatement.setInt(11, employee.getCityZipCode());
             preparedStatement.setString(12, employee.getCityName());
 
@@ -315,6 +322,103 @@ public class EmployeeDBAccess extends DBAccess implements IEmployeeDAO {
             }
 
             return employees;
+        } catch (SQLTimeoutException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.TIMEOUT.toString(), e.getMessage());
+        } catch (SQLException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.ACCESS_ERROR.toString(), e.getMessage());
+        }
+    }
+
+    public byte[] getPasswordHash(int id) throws NotFoundException, DAORetrievalFailedException {
+        sqlInstruction = "SELECT password FROM employee WHERE id = ?;";
+
+        try {
+            preparedStatement = SingletonConnection.getInstance().prepareStatement(sqlInstruction);
+            preparedStatement.setInt(1, id);
+
+            data = preparedStatement.executeQuery();
+
+            if (data.next()) {
+                return data.getBytes("password");
+            } else {
+                throw new NotFoundException(objectClassName, id, DBRetrievalFailure.NO_ROW.toString());
+            }
+        } catch (SQLTimeoutException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.TIMEOUT.toString(), e.getMessage());
+        } catch (SQLException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.ACCESS_ERROR.toString(), e.getMessage());
+        }
+    }
+
+    private void city(City city) throws DAORetrievalFailedException {
+        boolean exists = false;
+        String cityName = city.getName();
+        int cityZipCode = city.getZipCode();
+        
+        sqlInstruction = "SELECT * FROM city WHERE name = ? AND zip_code = ?;";
+
+        try {
+            preparedStatement = SingletonConnection.getInstance().prepareStatement(sqlInstruction);
+            preparedStatement.setString(1, cityName);
+            preparedStatement.setInt(2, cityZipCode);
+
+            data = preparedStatement.executeQuery();
+            exists = data.next();
+
+            if (!exists) {
+                sqlInstruction = "INSERT INTO city VALUES(?, ?, ?);";
+
+                preparedStatement = SingletonConnection.getInstance().prepareStatement(sqlInstruction);
+                preparedStatement.setString(1, cityName);
+                preparedStatement.setInt(2, cityZipCode);
+                preparedStatement.setString(3, city.getCountry());
+                preparedStatement.executeUpdate();
+            }
+            
+        } catch (SQLTimeoutException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.TIMEOUT.toString(), e.getMessage());
+        } catch (SQLException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.ACCESS_ERROR.toString(), e.getMessage());
+        }
+    }
+
+    public ArrayList<String> getAllCountries() throws DAORetrievalFailedException {
+        sqlInstruction = "SELECT country FROM coutry;";
+
+        try {
+            preparedStatement = SingletonConnection.getInstance().prepareStatement(sqlInstruction);
+
+            data = preparedStatement.executeQuery();
+
+            ArrayList<String> countries = new ArrayList<>();
+
+            while (data.next()) {
+                countries.add(data.getString("country"));
+            }
+
+            return countries;
+        } catch (SQLTimeoutException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.TIMEOUT.toString(), e.getMessage());
+        } catch (SQLException e) {
+            throw new DAORetrievalFailedException(DBRetrievalFailure.ACCESS_ERROR.toString(), e.getMessage());
+        }
+    }
+
+    public ArrayList<String> getAllRoles() throws DAORetrievalFailedException {
+        sqlInstruction = "SELECT label FROM role;";
+
+        try {
+            preparedStatement = SingletonConnection.getInstance().prepareStatement(sqlInstruction);
+
+            data = preparedStatement.executeQuery();
+
+            ArrayList<String> roles = new ArrayList<>();
+
+            while (data.next()) {
+                roles.add(data.getString("label"));
+            }
+
+            return roles;
         } catch (SQLTimeoutException e) {
             throw new DAORetrievalFailedException(DBRetrievalFailure.TIMEOUT.toString(), e.getMessage());
         } catch (SQLException e) {

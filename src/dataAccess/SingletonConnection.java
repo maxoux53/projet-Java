@@ -1,15 +1,14 @@
 package dataAccess;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.Env;
 import java.sql.*;
 
 public class SingletonConnection {
     private static Connection connection;
 
-    private static final Dotenv dotenv = Dotenv.load();
-    private static final String user = dotenv.get("PG_USER");
-    private static final String password = dotenv.get("PG_PASSWORD");
-    private static final String dbName = dotenv.get("PG_DB");
+    private static final String user = Env.getDotenv().get("PG_USER");
+    private static final String password = Env.getDotenv().get("PG_PASSWORD");
+    private static final String dbName = Env.getDotenv().get("PG_DB");
     private static final String connectionURL = "jdbc:postgresql://localhost:5432/" + dbName;
 
     public static Connection getInstance() throws DAORetrievalFailedException {
