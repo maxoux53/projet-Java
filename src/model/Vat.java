@@ -8,4 +8,13 @@ public class Vat {
         this.type = type;
         this.rate = rate;
     }
+    
+    // Getters
+    public Character getType() {
+        return type;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
 }

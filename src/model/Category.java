@@ -8,4 +8,13 @@ public class Category {
         this.id = id;
         this.name = name;
     }
+    
+    // Getters
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

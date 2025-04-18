@@ -5,25 +5,37 @@ import javax.swing.*;
 public class CartThread extends Thread {
     // Attributes
     private Home homePage;
-    private boolean running; // needs a better name
+    private boolean running = false; 
     
     // Constructors
     public CartThread(Home homePage) {
         this.homePage = homePage;
     }
 
-    public void setRunning(boolean isHomePageActive) {
+    public synchronized void setRunning(boolean isHomePageActive) {
         this.running = isHomePageActive;
+        if (running) {
+            notify();
+        }
     }
 
     @Override
     public void run() {
         Cart cart = homePage.getCart();
-
-        while (running) {
+        
+        while (true) {
+            synchronized (this) {
+                if (!running) {
+                    try {
+                        wait();
+                    } catch (InterruptedException interruptedException) {
+                        System.exit(0);
+                    }
+                }
+            }
+                
             cart.move();
             homePage.repaint();
-            System.out.println("test"); // DEBUG
 
             try {
                 Thread.sleep(15);

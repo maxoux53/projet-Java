@@ -16,9 +16,9 @@ public class Home extends JPanel {
         
         // Title
         JLabel text = new JLabel("<html>Gestion du magasin<html>", SwingConstants.CENTER);
-        text.setFont(new Font("SansSerif", Font.PLAIN, 50));
+        text.setFont(new Font("SansSerif", Font.BOLD, 50));
         JLabel shopName = new JLabel("Le P'tit Bazar", SwingConstants.CENTER);
-        shopName.setFont(new Font("SansSerif", Font.PLAIN, 50));
+        shopName.setFont(new Font("SansSerif", Font.BOLD, 50));
         add(text);
         add(shopName);
         
@@ -26,8 +26,7 @@ public class Home extends JPanel {
         cart = new Cart();
         
         // Cart Thread
-        cartThread = new CartThread(this);
-        cartThread.setRunning(true);
+        setCartThread(new CartThread(this));
         cartThread.start();
     }
 
@@ -38,6 +37,11 @@ public class Home extends JPanel {
 
     public CartThread getCartThread() {
         return cartThread;
+    }
+    
+    // Setters
+    public void setCartThread(CartThread cartThread) {
+        this.cartThread = cartThread;
     }
 
     // Methods

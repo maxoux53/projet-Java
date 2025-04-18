@@ -45,7 +45,7 @@ public class Login extends JPanel {
         formPanel.add(usernameLabel);
         usernameField = new JTextField();
         usernameField.setFont(new Font("SansSerif", Font.PLAIN, 25));
-        usernameField.setBackground(new Color(238, 238, 238));
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         usernameField.setPreferredSize(new Dimension(20, 25));
         formPanel.add(usernameField);
         
@@ -56,7 +56,7 @@ public class Login extends JPanel {
         formPanel.add(passwordLabel);
         passwordField = new JPasswordField();
         passwordField.setFont(new Font("SansSerif", Font.PLAIN, 25));
-        passwordField.setBackground(new Color(238, 238, 238));
+        passwordField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         passwordField.setPreferredSize(new Dimension(passwordField.getPreferredSize().width, 10));
         formPanel.add(passwordField, BorderLayout.CENTER);
         
