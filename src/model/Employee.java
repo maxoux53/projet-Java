@@ -31,8 +31,8 @@ public class Employee {
         setRoleLabel(roleLabel);
         this.hireDate = hireDate;
         this.managerId = managerId;
-        this.cityZipCode = cityZipCode;
-        this.cityName = cityName;
+        setCityZipCode(cityZipCode);
+        setCityName(cityName);
     }
 
     public Employee(String firstName, String lastName, byte[] password, Boolean isActive, String street, String streetNumber, Integer unitNumber, String roleLabel, LocalDate hireDate, Integer managerId, Integer cityZipCode, String cityName) throws ProhibitedValueException {
@@ -78,7 +78,7 @@ public class Employee {
 
     public void setUnitNumber(int unitNumber) throws ProhibitedValueException {
         if (unitNumber < 1) {
-            throw new ProhibitedValueException("Le numéro d'unité doit être supérieur ou égal à 1");
+            throw new ProhibitedValueException("Le numéro de boite postale doit être supérieur ou égal à 1");
         }
 
         this.unitNumber = unitNumber;
@@ -90,6 +90,22 @@ public class Employee {
         }
 
         this.roleLabel = roleLabel;
+    }
+
+    public void setCityZipCode(Integer zipCode) throws ProhibitedValueException {
+        if (zipCode < 1 || zipCode > 99999) {
+            throw new ProhibitedValueException("Le code postal doit être compris entre 1 et 99999");
+        }
+
+        this.cityZipCode = zipCode;
+    }
+
+    public void setCityName(String name) throws ProhibitedValueException {
+        if (name.length() > 20) {
+            throw new ProhibitedValueException("Le nom de la ville ne peut pas dépasser 20 caractères");
+        }
+
+        this.cityName = name;
     }
 
     // Getters
