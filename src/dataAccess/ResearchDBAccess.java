@@ -38,7 +38,7 @@ public class ResearchDBAccess extends DBAccess implements ResearchDAO {
             }
             
             if (purchaseInformations.isEmpty()) {
-                // throw new NotFoundException(DBRetrievalFailure.NO_ROW, (long) date, ));
+                // throw new NotFoundException(DBRetrievalFailure.NO_ROW, date, ));
             }
             
             return purchaseInformations;
@@ -75,7 +75,7 @@ public class ResearchDBAccess extends DBAccess implements ResearchDAO {
             }
 
             if (employeeInformations.isEmpty()) {
-                //throw new NotFoundException(DBRetrievalFailure.NO_ROW, Long.valueOf(date.toString(), ));
+                //throw new NotFoundException(DBRetrievalFailure.NO_ROW, date.toString(), ));
             }
 
             return employeeInformations;
@@ -112,7 +112,7 @@ public class ResearchDBAccess extends DBAccess implements ResearchDAO {
             }
 
             if (productInformations.isEmpty()) {
-                //throw new NotFoundException(DBRetrievalFailure.NO_ROW, Long.valueOf(date.toString(), ));
+                //throw new NotFoundException(DBRetrievalFailure.NO_ROW, date.toString(), ));
             }
             
             return productInformations;

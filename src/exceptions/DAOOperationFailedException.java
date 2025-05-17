@@ -1,25 +1,39 @@
 package exceptions;
 
 public abstract class DAOOperationFailedException extends Exception {
-    private String operationType;
     private String objectType;
-    private Long objectId;
+    private Object objectId;
 
-    public DAOOperationFailedException(String operationType, String objectType, Long objectId, String message) {
+    private DAOOperationFailedException(String objectType, String message) {
         super(message);
-        this.operationType = operationType;
         this.objectType = objectType;
+    }
+
+    public DAOOperationFailedException(String objectType, Long objectId, String message) {
+        this(objectType, message);
         this.objectId = objectId;
     }
+
+    public DAOOperationFailedException(String objectType, Integer objectId, String message) {
+        this(objectType, message);
+        this.objectId = objectId;
+    }
+
+    public DAOOperationFailedException(String objectType, Character objectId, String message) {
+        this(objectType, message);
+        this.objectId = objectId;
+    }
+
+    public abstract String getOperationType();
 
     @Override
     public String getMessage() {
         StringBuilder output = new StringBuilder();
 
-        if (operationType == null) {
+        if (getOperationType() == null) {
             output.append("L'opération a échoué !");
         } else {
-            output.append("L'opération de ").append(operationType).append(" sur l'objet ").append(objectType);
+            output.append("L'opération de ").append(getOperationType()).append(" sur l'objet ").append(objectType);
 
             if (objectId != null) {
                 output.append(" dont l'identifiant est '").append(objectId).append("'");

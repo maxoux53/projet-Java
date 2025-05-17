@@ -8,6 +8,7 @@ import view.FontPreferences;
 
 import javax.swing.*;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class ProductPanel extends JPanel {
@@ -21,15 +22,15 @@ public class ProductPanel extends JPanel {
     private JRadioButton availableRadioButtonYes, availableRadioButtonNo;
     private ButtonGroup availabilityGroup;
     private JButton button;
-    private ProductController productController;
+    private ProductController controller;
 
     // Constructors
     public ProductPanel(String title, String buttonString) {
+        setController(new ProductController());
+
         setLayout(new BorderLayout(0, 100));
         setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         setBackground(Color.white);
-
-        productController = new ProductController();
 
         // Title
         titlePanel = new JPanel();
@@ -136,7 +137,7 @@ public class ProductPanel extends JPanel {
 
         final ArrayList<Vat> vats;
         try {
-            vats = productController.getAllVats();
+            vats = controller.getAllVats();
 
             for (Vat vat : vats) {
                 vatTypeComboBox.addItem(vat.getType() + " (" + vat.getRate() + "%)");
@@ -163,7 +164,7 @@ public class ProductPanel extends JPanel {
 
         final ArrayList<Category> categories = new ArrayList<>();
         try {
-            categories.addAll(productController.getAllCategories());
+            categories.addAll(controller.getAllCategories());
 
             for (Category category : categories) {
                 categoryComboBox.addItem(category.getLabel());
@@ -336,5 +337,44 @@ public class ProductPanel extends JPanel {
         
         repaint();
         revalidate();
+    }
+
+    public String nullIfEmptyName(String name) {
+        return (name.isEmpty() ? null : name);
+    }
+
+    public BigDecimal stringToPrice(String priceAsString) throws WrongTypeException, ProhibitedValueException {
+        if (!priceAsString.isEmpty()) {
+            BigDecimal price;
+
+            try {
+                price = new BigDecimal(priceAsString);
+
+                if (price.compareTo(BigDecimal.ZERO) < 0) {
+                    throw new ProhibitedValueException("Prix");
+                }
+
+                return price;
+            } catch (NumberFormatException numberFormatException) {
+                throw new WrongTypeException("Prix");
+            }
+        }
+        return null;
+    }
+
+    public Long stringToBarcode(String barcodeAsString) throws WrongTypeException, FieldIsEmptyException {
+        if (!barcodeAsString.isEmpty()) {
+            try {
+                return Long.parseLong(barcodeAsString);
+            } catch (NumberFormatException numberFormatException) {
+                throw new WrongTypeException("Code-barres");
+            }
+        } else {
+            throw new FieldIsEmptyException("Code-barres");
+        }
+    }
+
+    public void setController(ProductController productController) {
+        controller = productController;
     }
 }

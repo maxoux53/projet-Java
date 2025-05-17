@@ -10,10 +10,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class EmployeeController {
-    private final EmployeeManager manager;
+    private EmployeeManager manager;
 
     public EmployeeController() {
-        this.manager = new EmployeeManager();
+        setManager(new EmployeeManager());
+    }
+
+    public void setManager(EmployeeManager manager) {
+        this.manager = manager;
     }
 
     public int create(String firstName, String lastName, char[] password, Boolean isActive, String street, String streetNumber, String unitNumberAsString, String roleLabel, Date date, String managerIdAsString, String zipCodeAsString, String cityName, String countryName) throws HashFailedException, InsertionFailedException, DAORetrievalFailedException, WrongTypeException, ProhibitedValueException {

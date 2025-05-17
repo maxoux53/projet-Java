@@ -8,13 +8,17 @@ import model.Customer;
 import java.util.ArrayList;
 
 public class CustomerController {
-    private final CustomerManager manager;
+    private CustomerManager manager;
 
     public CustomerController() {
-        this.manager = new CustomerManager();
+        setManager(new CustomerManager());
     }
 
-    public Customer getByLoyaltyCardNumber(int loyaltyCardNumber) throws NotFoundException, DAORetrievalFailedException {
+    public void setManager(CustomerManager manager) {
+        this.manager = manager;
+    }
+
+    public Customer getByLoyaltyCardNumber(Integer loyaltyCardNumber) throws NotFoundException, DAORetrievalFailedException {
         return manager.getByLoyaltyCardNumber(loyaltyCardNumber);
     }
 
